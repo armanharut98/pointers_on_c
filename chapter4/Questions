@@ -1,0 +1,217 @@
+1.  Is the following statement legal? If so, what does it do?
+        3 * x * x – 4 * x + 6; 
+
+    Answer: It is legal. The statement returns the value computed using the x variable but the result is ignored.
+
+2.  What is the syntax of the assignment statement?
+
+    Answer: variable = expression;
+
+3.  Is it legal to use a block in this manner? If so, why would you ever want to use it?
+        ..
+        statement
+        {
+            statement
+            statement
+        }
+        statement
+
+    Answer: Yes, it is legal. Statements that achieve a common goal could be grouped together in a block. That way the data that's needed for achieving 
+            the desired result could also be declared inside that block. That way the data would be local to that block and would be cleared after the block exits. 
+            Also, it could improve the readability of the code.
+
+4.  How would you write an if statement that had no statements in the then clause
+    but had statements in the else clause? How else, could an equivalent statement be
+    written?
+
+    Answer: if (expression)
+                ;
+            else
+                statements;
+
+            Alternatively
+
+            if (!expression) {
+                statements
+            }
+
+5.  What output is produced from the loop below?
+        int i; 
+        ...
+        for( i = 0; i < 10; i += 1 )
+            printf( "%d\n", i );
+
+        Answer: 0
+                1
+                2
+                3
+                4
+                5
+                6
+                7
+                8
+                9
+
+6.  When might a while statement be more appropriate than a for statement?
+
+    Answer: When waiting for input from user.
+
+7.  The code fragment below is supposed to copy the standard input to the standard
+    output and compute a checksum of the characters. What is wrong with it?
+        while( (ch = getchar()) != EOF )
+            checksum += ch;
+            putchar( ch );
+        printf( "Checksum = %d\n", checksum ); 
+
+    Answer: The loop's body consists of 2 statements but there is no block surrounding them.
+
+8.  When is the do statement more appropriate than a while or a for statement?
+
+    Answer: When you need the body of the loop to be executed at least once before running any tests. For example, prompting user for input and then checking it
+            and if there is something wrong with the input, prompting the user again.
+
+9.  What output is produced from this code fragment? Note: The % operator divides its
+    left operand by its right operand and gives you the remainder
+        for( i = 1; i <= 4; i += 1 ){
+            switch( i % 2 ){
+            case 0:
+                printf( "even\n" );
+            case 1:
+                printf( "odd\n" );
+            }
+        }
+
+    Answer: odd
+            even
+            odd
+            odd
+            even
+            odd
+
+10. Write statements that read an integer value from the standard input and then print
+    that many blank lines.
+
+    Answer: int n;
+            scanf("%d", &n);
+            for (int i = 0; i < n; i++)
+                putchar(' ');
+
+11. Write statements to valdate and report on some values that have already been
+    read. If x is less than y, print the word WRONG. Also, if a is greater than or equal to b,
+    print WRONG. Otherwise, print the word RIGHT. Note: In case you need it, || is the "or"Ȉȱoperator.
+
+    Answer: int a, b, x, y;
+
+            printf("Enter x: ");
+            scanf("%d", &x);
+  
+            printf("Enter y: ");
+            scanf("%d", &y);
+  
+            printf("Enter a: ");
+            scanf("%d", &a);
+  
+            printf("Enter b: ");
+            scanf("%d", &b);
+  
+            if ( x < y || a >= b )
+                printf("WRONG\n");
+            else
+                printf("RIGHT\n");
+
+12. Years that are divisible by four are leap years, except, that years that are divisible
+    by 100 are not. However, years that are divisible by 400 are leap years. Write
+    statements to determine whether the value in year is a leap year, and set the
+    variable leap_yeas to one if it is a leap year, and zero if it is not.
+
+    Answer: int year;
+            int leap_year;
+  
+            printf("Enter year: ");
+            scanf("%d", &year);
+  
+            if ( (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 )
+                leap_year = 1;
+            else
+                leap_year = 0;
+  
+            if ( leap_year )
+                printf("Leap year\n");
+            else
+                printf("Not a leap year\n");
+
+13. Newspaper reporters are trained to ask who, what, when, where, and why? Write
+    statements that will print who if the variable which_word is one, what if the
+    variable is two, and so forth. If the value is not in the range one through five, print
+    don’t know instead.
+
+    Answer:     int which_word;
+                scanf("%d", &which_word);
+   
+                switch (which_word) {
+                    case 1:
+                        printf("who\n");
+                        break;
+                    case 2:
+                        printf("what\n");
+                        break;
+                    case 3:
+                        printf("when\n");
+                        break;
+                    case 4:
+                        printf("where\n");
+                        break;
+                    case 5:
+                        printf("why\n");
+                        break;
+                    default:
+                        printf("don't know\n");
+                }
+
+14. Pretend that a "program" controls you, and this program contains two function:
+    eat_hamburger() makes you eat a hamburger, and hunger() returns a true or false
+    value depending on whether yu are hungry. Write the statement that allow you to
+    eat as many hamburgers as you want until youȇre no longer hungry.
+
+    Answer: while (hunger())
+               eat_hamburger();
+
+15. Modify our answer to question 14 to satisfy your grandmother—You've got to eat
+    something!—so that you always eat at least one hamburgery
+
+    Answer: do {
+                eat_hamburger();
+            }
+            while (hunger());
+
+16. Write statements to print a capsule summary of the current weather according to
+    the values of the variables precipitating and temperature.
+    
+    If precipitating is …  | and temperature is … |  then print …
+    --------------------------------------------------------------
+    true                   | < 32                 |  snowing
+                           | >= 32                |  raining
+    ---------------------------------------------------------------
+    false                  | < 60                 |  cold
+                           | >= 60                |  warm
+
+    Answer: int precipitating, temperature;
+
+            printf("Enter precipitating: ");
+            scanf("%d", &precipitating);
+
+            printf("Enter temperature: ");
+            scanf("%d", &temperature);
+  
+            if (precipitating == 1) {
+                if (temperature < 32)
+                    printf("snowing\n");
+                else
+                    printf("raining\n");
+            } else {
+                if (temperature < 60)
+                    printf("cold\n");
+                else
+                    printf("warm\n");
+            }
+

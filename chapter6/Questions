@@ -1,0 +1,128 @@
+1.  If the type of a value cannot be determined simply by looking at its bits, how does
+    the machine know how the value should be manipulated?
+
+    Answer: The machine doesn't do anything. The compiler analyzes the source code, reads the memory and interprets it in the way that is needed.
+
+2.  Why doesn't C have a way of declaring literal pointer constants?
+
+    Answer: They are rarely used in programs, since we don't know where the compiler will put any specific value in the memory before actually running the program.
+
+3.  Suppose an integer contains the value 244. Why doesn't the machine interpret this
+    value as an address?
+
+    Answer: The machine doesn't interpret the value. The compiler does based on the source code.
+
+4.  On some machines, the compiler arranges for memory location zero to contain the
+    value zero. Dereferencing a NULL pointer then accesses this location. What are the
+    consequences of this arrangement?
+
+    Answer: It is dangerous. First, the result of dereferencing a NULL pointer is
+            implementation specific, so programs should not do it. Allowing a program to
+            continue after such an access is unfortunate, because of the strong possibility
+            that the program is not operating correctly
+
+5.  What is the difference (if any) between the work that is required to evaluate
+    expressions (a) and (b)? Assume that the variable offset has the value three.
+
+        int i[ 10 ];
+        int *p = &i[ 0 ];
+        int offset;
+
+        p += offset; (a)
+        p += 3; (b)
+
+    Answer: If the program is optimized there should be no difference.
+
+6.  What (if anything) is wrong with the following code segment?
+
+        int array[ARAY_SIZE];
+        int *pi;
+
+        for( pi = &array[0]; pi < &array[ARRAY_SIZE]; )
+            *++pi = 0;
+
+    Answer: Two things are wrong. By dereferencing the incremented value of the pointer,
+            the first element in the array is not zeroed. In addition, the pointer is
+            dereferenced after it has moved past the end of the array. This sets some other
+            memory location to zero.
+            Note that pi was declared immediately after the array. If the compiler
+            happened to put it in memory immediately after the array, the result is disaster.
+            When the pointer moves past the end of the array, the last location to be set to
+            zero will be the one holding the pointer.ȱȱThe pointer (now zero) will still be less
+            than &array[ARRAY_SIZE], so the loop will continue to execute. The pointer is
+            incremented before being dereferenced, so the next value to get zapped will be
+            the one stored at location four (assuming four-byte integers). If the hardware
+            does not catch this error and terminate the program, the loop will continue
+            merrily on its way through memory, wiping out values as it goes. When the
+            array is reached once more, the process begins again, making a rather subtle
+            infinite loop.
+
+7.  The table below shows the contents of several memory locations. Each location is
+    identified by its address and also by the name of the variable stored there. All
+    numbers are shown in decimal.
+
+    Variable Address Contents
+    a        1040    1028     
+    c        1056    1076     
+    d        1008    1016     
+    e        1032    1088     
+    f        1052    1044     
+    g        1000    1064     
+    h        1080    1020     
+    i        1020    1080     
+    j        1064    1000     
+    k        1044    1052     
+    m        1016    1008     
+    n        1076    1056                      
+    o        1096    1024
+    q        1084    1072
+    r        1068    1048
+    s        1004    2000
+    t        1060    1012
+    u        1036    1092
+    v        1092    1036
+    w        1012    1060
+    x        1072    1080
+    y        1048    1068
+    z        2000    1000
+
+    Using these values, evaluate each of the expressions below four ways. First,
+    assume that all the variables are integers, and find the expressions R-value. Then
+    find its L-value, and give the address of the location it specifies. Next, assume that
+    all the variables are pointers to integers and repeat the exercise. Note: Do your
+    address arithmetic based on four-byte integers and pointers.
+
+    Answer: 
+                |        Integers        |  Pointers to integers
+    Expression  |   R-value  |  L-value  |  R-value  |  L-value
+    ------------|------------|-----------|-----------|---------
+    m           |   1008     |  1016     |  1008     |  1040
+    v + 1       |   1037     |  invalid  |  1040     |  invalid 
+    j - 4       |   996      |  invalid  |  984      |  invalid
+    a - d       |   12       |  invalid  |  3        |  invalid
+    v - w       |   -24      |  invalid  |  -6       |  invalid
+    &c          |   1056     |  invalid  |  1056     |  invalid
+    &e + 1      |   1036     |  invalid  |  1036     |  invalid
+    &o - 4      |   1080     |  invalid  |  1080     |  invalid
+    &(f + 2)    |   1060     |  invalid  |  invalid  |  invalid
+    *g          |   invalid  |  invalid  |  1000     |  1064
+    *k + 1      |   invalid  |  invalid  |  1048     |  1056
+    *(n + 1)    |   invalid  |  invalid  |  1012     |  1012
+    *h - 4      |   invalid  |  invalid  |  1064     |  1064
+    *(u - 4)    |   invalid  |  invalid  |  1056     |  1056
+    *f - g      |   invalid  |  invalid  |  -3       |  invalid
+    *f - *g     |   invalid  |  invalid  |  13       |  invalid
+    *s - *q     |   invalid  |  invalid  |  -20      |  invalid
+    *(r - t)    |   invalid  |  invalid  |  invalid  |  invalid
+    y > i       |   0        |  invalid  |  0        |  invalid
+    y > *i      |   invalid  |  invalid  |  1        |  invalid
+    **h         |   invalid  |  invalid  |  1020     |  1080
+    c++         |   1076     |  invalid  |  1076     |  invalid
+    ++c         |   1077     |  invalid  |  1080     |  invalid
+    *q++        |   invalid  |  invalid  |  1056     |  1072
+    (*q)++      |   invalid  |  invalid  |  1084     |  invalid
+    *++q        |   invalid  |  invalid  |  1056     |  1076
+    ++*q        |   invalid  |  invalid  |  1084     |  invalid
+    *++*q       |   invalid  |  invalid  |  1072     |  1084
+    ++*(*q)++   |   invalid  |  invalid  |  1024     |  invalid
+

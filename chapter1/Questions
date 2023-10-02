@@ -1,0 +1,50 @@
+1.  C is a freeȬform language, which means that there are no rules regarding how
+    programs must look10. Yet the sample program followed specific spacing rules.
+    Why do you think this is?
+
+    Answer: It is important to adhere to a coding style to make the code more readable and maintainable
+
+2.  What is the advantage of putting declarations, such as function prototypes, in
+    header files and then using #include to bring the declarations into the source files
+    where they are needed?
+
+    Answer: The benefit is that the programmer can write the function prototypes once in a header file and use #include to
+            copy the declarations into all the files where those declarations are needed
+
+3.  What is the advantage of using #define to give names to literal constants?
+
+    Answer: There are two main advantages: first, if you need to change the value of the literal constant you can do it once,
+            second: it can make the code more readable.
+
+4.  What format string would you use with printf in order to print a decimal integer,
+    a string, and a floatingȬpoint value, in that order? Separate the values from one
+    another with a space, and end the output with a newline character.
+
+    Answer: "%d %s %g\n"
+
+5.  Write the scanf statement needed to read two integers, called quantity and price,
+    followed by a string, which should be stored in a character array called department.
+
+    Answer: scanf("%d%d%s", &quantity, &price, departament);
+
+6.  There are no checks made on the validity of an array subscript in C. Why do you
+    think this obvious safety measure was omitted from the language?
+
+    Answer: I think performance and the ambiguity between an array and a pointer in C were the reason for the omission.
+            More on the topic here: https://stackoverflow.com/questions/61285343/why-dont-modern-compilers-catch-attempts-to-make-out-of-bounds-access-to-arrays
+
+7.  The rearrange program described in the chapter contains the statement
+        strncpy( output + output_col, input + columns[col], nchars );
+    The strcpy function takes only two arguments, so the number of characters it
+    copies is determined by the string specified by the second argument. What would
+    be the effect of replacing the strncpy function call with a call to strcpy in this
+    program?
+
+    Answer: It would just copy all the chars of the second argument starting from the first column to the end of the input, overflowing the output array. 
+
+8.  The rearrange program contains the statement
+        while( gets( input ) != NULL ){
+    What might go wrong with this code?
+
+    Answer: When an array is pased as a function argument, the function has no way of knowing its size. Therefore, gets has no way to prevent a very long input 
+            line from overflowing the input array. The fgets function, which requires that the array size be passed as an argument, does not have this problem.

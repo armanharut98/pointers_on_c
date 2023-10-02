@@ -1,0 +1,274 @@
+1.  What is the range for characters and the various integer types on your machine?
+
+    Answer: Character - Signed Min: -128, Signed Max: 127, Unsigned Max: 255
+            Short - Signed Min: -32768, Signed Max: 32767, Unsigned Max: 65535
+            Integer - Signed Min: -2147483648, Signed Max: 2147483647, Unsigned Max: 4294967295
+            Long - Signed Min: -9223372036854775808, Signed Max: 9223372036854775807, Unsigned Max: 18446744073709551615
+
+2.  What is the range for each of the floatingȬpoint types on your machine?
+
+    Answer: Float - Signed Min: 1.175494e-38, Signed Max: 3.402823e+38
+            Double - Signed Min: 2.225074e-308, Signed Max: 1.797693e+308
+            Long Double - Signed Min: 3.362103e-4932, Signed Max: 1.189731e+4932
+
+3.  Suppose you are writing a program that must run on two machines whose default
+    integers are different sizes: 16 bits and 32 bits. The size of long integers on these
+    machines is 32 bits and 64 hits, respectively. Some of the values used in this
+    program are small enough to fit in a default integer on either machine, but some
+    values are large enough to require 32 bits. One possible solution is to simply use
+    long integers for all values, but this approach wastes time and space on the 16-bit
+    machine for those values that would fit in 16 bits and wastes time and space on the
+    32-bit machine as well.
+    How can you write the declarations for these variables so that they are the right
+    size for both machines? The correct approach avoids the raced to modify these
+    declarations when compiling the program on either machine. Hint: Try including a
+    header file that contains declarations specific to each particular machine.
+
+    Answer: Declare integer variables that must be a particular size with names like int8,
+            int16, int32. For integers that you want to be the default size, use names like
+            defint8, defintl6, and defint32 depending on the largest value they must
+            hold. Then create a file called int_sizes.h for each machine containing
+            typedefȇs that select the best integer size for each of your names. On a typical
+            32-bit machine this file would contain:
+                typedef signed char int8;
+                typedef short int int16;
+                typedef int int32;
+                typedef int defint8;
+                typedef int defint16;
+                typedef int defint32;
+            On a typical machine with 16-bit integers, the file would contain:
+                typedef signed char int8;
+                typedef int int16;
+                typedef long int int32;
+                typedef int defint8;
+                typedef int defint16;
+                typedef long int defint32;
+            #define-s could also be used.
+
+4.  Suppose you have a program that assigns a long integer variable to a short
+    integer variable. What happens when you compile this program? What happens
+    when you run it? Do you think that other compilers will give the same results?
+
+    Answer: The compilation succeeds. The assignment causes an integer overflow. I think that depending on the long integer's range the results 
+            with different compilers may vary.
+
+5.  Suppose you have a program that assigns a double variable to a float. What
+    happens when you compile this program? What happens when you run it?
+
+    Answer: Since floats have less precision that doubles the value may change. The compilation will succeed.
+
+6.  Write a declaration for an enumeration that defines values for coins, using the
+    symbols PENNY, NICKEL, and so forth.
+
+    Answer: enum coin {
+                PENNY = 1,
+                NICKEL = 5,
+                DIME = 10,
+                QUARTER = 25
+            };
+
+7.  What is rinted by this fragment of code?p
+        enum Liquid { OUNCE = 1, CUP = 8, PINT = 16, QUART = 32, GALLON = 128 };
+        enum Liquid jar;
+        jar = QART;
+        printf( "%s\n", jar );
+        jar = jar + PINT;
+        printf( "%s\n", jar ); 
+
+    Answer: The "%s" format designator is used mistakenly and causes a segmentation fault.
+
+8.  Does your C implementation allow string literals to be modified by the program?
+    Are there any compiler options that allow the modification of string literals to be
+    enabled or disabled?
+
+    Answer: No.
+
+9.  If the integer types are normally signed, what is the purpose of the signed
+    keyword?
+
+    Answer: There is only one instance where you might want to use the signed keyword. 
+            signed char is always a different type from "plain" char, which may be a signed or an unsigned type depending on the implementation.
+
+10. Can an unsigned variable hold a larger range of values than a signed variable of
+    the same size?
+
+    Answer: No. In any given number of bits n, there are only 2n distinct combinations of the
+            bit values. The only thing that changes between a signed and an unsigned value
+            is how half of those values are interpreted. In a signed number, they are
+            negative; in an unsigned number, they are the larger positive values.
+
+11. Assuming that they are both 32 bits long, which type of variable can hold more
+    distinct values, an int or a float?
+
+    Answer: The float has a greater range than the int, but it cannot have more distinct
+            values without using more bits. The logic in the previous answer implies that
+            they hold the same number of distinct values, but for most floatingȬpoint
+            systems this answer is wrong. There are usually lots of representations for zero,
+            and by using unnormalized fractions, lots of representations for other values as
+            well. Thus the number of distinct values is less than that of an int.
+
+12. The two fragments of code shown below came from the beginning of a function.
+        int a = 25;
+
+        int a;
+        a = 25;
+    How do they differ in what they accomplish?
+
+    Answer: They accomplish the same thing. The difference is only stylistic.
+
+13. If the declarations in the code fragments in question 12 included the word const,
+    how would they differ in what they accomplished?
+
+    Answer: The first fragment would successfully initialize the variable a. The second fragment would fails since we can't assign a value to const after declaration.
+
+14. A variable declared in a block may be accessed by name from anywhere in that
+    block. True or false?
+
+    Answer: Generally true. The only exception is when there is a nested block and in that block there is a variable with the same name, in which case 
+            that variable will make the original variable invisible inside that nested block.
+
+15. Suppose function a declares an automatic integer variable called x. You can access
+    the variable x from a different function by using a declaration such as this one.
+        extern int x;
+    True or false?
+
+    Answer: False. Automatic variables declared inside a function have no linkage by default.
+
+16. Suppose the variable x in question 15 had been declared static. Does this
+    modification change your answer?
+
+    Answer: No. Using static would change the storage class but not the linkage of the variable.
+
+17. Suppose the file a.c begins with this declaration:
+        int x;
+    What declaration (if any) would be needed to access this variable from a function
+    found later in the same file?
+
+    Answer: No declaration needed. The variable will have file scope.
+
+18. Supposethe declaration in question 17 included the keyword static. Would this
+    modification change your answer? 
+
+    Answer: No. static would change the linkage from external to internal, but would not change the scope for the variable, 
+            meaning that the variable would be accessible in the same file without the need for additional declarations.
+
+19. Suppose the file a.c begins with this declaration:
+        int x;
+    What declaration (if any) would be needed to access this variable from a function
+    found in a different source file
+
+    Answer: extern int x;
+
+20. Suppose the declaration in question 19 included the keyword static. Would this
+    modification change your answer?
+
+    Answer: Yes, the keyword static would make the variable inaccessible from other source files.
+
+21. Suppose a function that contains automatic variables is called twice in a row. Is it
+    possible that the variables will have the same values at the beginning of the second
+    call that they had at the end of the first call?
+
+    Answer: It is possible, but very unlikely. Every time a block is entered, the variable may occupy a different location on the stack.
+            Even if the memory location is the same, there is no guarantee that the memory was not used for other reasons in the meantime.
+
+22. What is the difference in the behavior of the declaration
+        int a = 5;
+    When it appears inside of a function as compared to when it appears outside?
+
+    Answer: Inside of a function, the variable will have no linkage, automatic memory and block scope.
+            Outside of a function, the variable will have external linkage, static memory and file scope.
+
+23. Suppose you wanted to write two functions, x and y, in the same source file, that
+    use the following variables:
+
+    Name  | Type  | Storage Class | Linkage   | Scope                  |   Initialized to
+    a     | int   | static        | external  | accessible to x; not y |   1
+    b     | char  | static        | none      | accessible to x and y  |   2
+    c     | int   | automatic     | none      | local to x             |   3
+    d     | float | static        | none      | local to x             |   4
+
+    How and where would you write the declarations for these variables? Note: All
+    initialization must be made in the declarations themselves, not by any executable
+    statements in the functions.
+
+    Answer: Variable    | Declaration           | Location
+            a           | extern int a = 1      | inside function x
+            b           | static int b = 2      | outside function x and y
+            c           | int c = 3             | inside function x
+            d           | static float d = 4    | inside function x
+
+24. Identify any errors contained in the following program. (You may wish to try
+    compiling it to be sure.) After you have removed the errors, determine the storage
+    class, scope, and linkage of every identifier. What will be the initial value of each
+    variable? There are many duplicate identifiers; do they refer to the same variable or
+    no different ones? From where can each of these functions be called?
+
+    static int w = 5;
+    extern int x;
+    static float func1( int a, int b, int c )
+    {
+        int c, d, e = 1;
+        ...
+        {
+            int d,e,w;
+            ...
+            {
+                int b, c, d;
+                static int y = 2;
+                ...
+            }
+        }
+        ...
+        {
+            register int a, d, x;
+            extern int y;
+            ...
+        }
+    }
+    static int y;
+    float func2( int a )
+    {
+        extern int y;
+        static int z;
+        ...
+    }
+
+    Answer: Look in the question24.c file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

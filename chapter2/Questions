@@ -1,0 +1,120 @@
+1.  Comments in C do not nest. What would be the result of commenting out the
+    code in the example shown below? 
+        void squares int limit )
+        {
+        /* Comment out this entire function
+            int i; /* loop counter */
+            /*
+            ** Print table of squares
+            */
+            for( i = 0; i < limit; i += 1 )
+            printf( "%d %d0, i, i * i );
+        End of commented-out code */
+        } 
+
+    Answer: The i variable would not be initialed and the comment started on the 3rd line would be terminated at the end of the 4th line.
+            The for loop would not be commented out.
+
+2.  What are the advantages of putting a large program into a single source file?
+    What are the disadvantages?
+    
+    Answer: Advantages: the compilation process would be significantly easier. Programmers would not need to search for functions in other files since everything is in one place.
+            Disadvantages: since everything that's part of the program is in one place, navigating the file would be an issue. Readability of the code might become a problem.
+
+3.  Show the string literal that you would use with printf in order to print the
+    following text, including the quotation marks:
+    "Blunder??!??" 
+
+    Answer: "Blunder\?\?!\?\?"
+
+4.  What is the value of \40? Of \100? Of \x40? Of \x100? Of \0123? Of \x0123?
+
+    Answer: 
+            \40     ->  space
+            \100    ->  @
+            \x40    ->  @
+            \x100   ->  out of range
+            \0123   ->  newline3
+            \x0123  ->  out of range
+
+5.  What is the result of this statement?
+        int x/*blah blah*/y; 
+
+    Answer: Compilation error. The preprocessor will replace the comment with a space character, so the resulting code will be:
+                int x y; 
+
+6.  What (if anything) is wrong with the following declaration?
+        int Case, If, While, Stop, stop;
+
+    Answer: The code will compile but the variable identifiers are very similar to C keywords, which might cause confusion.
+
+7.  True or False: Because C (excluding the preprocessor directives) is a free-form
+    language, the only rules that govern how programs are written are the syntax
+    rules, so it doesnȇt matter how the program actually looks.
+
+    Answer: Both true and false. While it is true that the compile does not care about the look of the program, adhering to a programming style can
+            greatly improve code readability and maintainability.
+
+8.  Is the loop in the following program correct?
+        #include < stdio.h>
+        int main( void )
+        {
+        int x, y;
+        x = 0;
+        while( x < 10 ){
+            y = x * x;
+            printf( "%d\t%d\n", x, y );
+            x += 1;
+        } 
+
+    Answer: No.
+
+    Is the loop in this program correct?
+        #include <stdio.h>
+
+        int main( void )
+        {
+            int x, y;
+            x = 0;
+            while( x < 10 ){
+                y = x * x;
+                printf( "%d\t%d\n", x, y );
+                x += 1;
+        }
+    Answer: No.
+
+    Which program was easier to check?
+
+    Answer: The second one.
+
+9.  Suppose you have a C program whose main function is in the file main.c and has
+    other functions in the files list.c and report.c. What command(s) would you use
+    on your system to compile and link this program?
+
+    Answer: cc main.c list.c report.c
+
+10. How would you modify the command for the previous question in order to link a
+    library called parse with the program?
+
+    Answer: cc main.c list.c report.c -lparse
+
+11. Suppose you have a C program composed of several separate files, and they
+    include one another as shown below.
+
+    File        Includes Files
+   -------------------------------------------
+    main.c   |  stdio.h, table.h
+    list.c   |  list.h
+    symbol.c |  symbol.h
+    table.c  |  table.h
+    table.h  |  symbol.h, list.h.
+
+    Which files would have to be recompiled after you make a change to list.c? To
+    list.h? To table.h?
+
+    Answer: When a header is changed, every file that includes it must be recompiled.
+            list.c  ->  list.c
+            list.h  ->  list.c, table.c, main.c
+            table.h ->  table.c, main.c
+
+

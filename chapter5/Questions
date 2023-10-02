@@ -1,0 +1,192 @@
+1.  What is the type and value of the expression?
+        (float)( 25 / 10 )
+
+    Answer: The type is float and the value is 2.00000. Integer division will be performend and then the result will be casted to float.
+
+2.  What is the result of the following program?
+    int func( void )
+    {
+        static int counter = 1;
+        return ++counter;
+    }
+
+    int main()
+    {
+        int answer;
+ 
+        answer = func() – func() * func();
+        printf( "%d\n", answer );
+    }
+
+    Answer: On my machine the result was -10. But this is a trick question. The obvious answer is -10(2 - 3 * 4), but in fact it is
+            implementation dependent. The multiplication must be completed before the
+            addition, but there isnȇt a rule mat determines the order in which the function
+            calls are done. Thus, the answer could be any of the following:
+                -10 ( 2 – 3 * 4 )or ( 2 – 4 * 3 )
+                -5 ( 3 – 2 * 4 ) or ( 3 – 4 * 2 )
+                -2 ( 4 – 2 * 3 ) or ( 4 – 3 * 2 )  
+
+3.  What uses can you think of the bitwise and shifting operators?
+    Answer: Bit fields (flags)
+            They're the most efficient way of representing something whose state is defined by several "yes or no" properties. 
+            ACLs are a good example; if you have let's say 4 discrete permissions (read, write, execute, change policy), it's better to store this in 1 byte rather than waste 4. 
+            These can be mapped to enumeration types in many languages for added convenience.
+
+            Communication over ports/sockets
+            Always involves checksums, parity, stop bits, flow control algorithms, and so on, which usually depend on the logic values of 
+            individual bytes as opposed to numeric values, since the medium may only be capable of transmitting one bit at a time.
+
+            Compression, Encryption
+            Both of these are heavily dependent on bitwise algorithms. Look at the deflate algorithm for an example - everything is in bits, not bytes.
+
+            Finite State Machines
+            I'm speaking primarily of the kind embedded in some piece of hardware, although they can be found in software too. 
+            These are combinatorial in nature - they might literally be getting "compiled" down to a bunch of logic gates, so they have to be expressed as AND, OR, NOT, etc.
+
+            Graphics
+            There's hardly enough space here to get into every area where these operators are used in graphics programming. XOR (or ^) is particularly 
+            interesting here because applying the same input a second time will undo the first. Older GUIs used to rely on this for selection highlighting and other overlays, 
+            in order to eliminate the need for costly redraws. They're still useful in slow graphics protocols (i.e. remote desktop).
+
+4.  Is the conditional operator faster or slower at run time than an if statement?
+    Specifically, compare these two code fragments:
+    if( a > 3 )
+        i = b + 1;
+    else
+        i = c * 5;
+
+    i = a > 3 ? b + 1 : c *5;
+
+    Answer: No, they each do precisely the same work. If you want to get picky, the if
+            version might possibly be a tad longer because it has two instructions to store
+            into i. However, only one of them will be executed, so there isn't any difference
+            in speed.
+
+5.  Years that are dvisible by four are leap years with one exception – years that are
+    divisible by 100 are not. However, years that are divisible by 400 are leap years.
+    Write a single assignment that sets leap_year true if the value in year is a leap
+    year, and false if it is not.i
+    
+    Answer: year % 4 == 0 && (year % 400 == 0 || year % 100 != 0) ? 1 : 0;
+
+6.  Which operators have side effects, and what are they?
+
+    Answer: = and all of the other assignment operators: they all modify the
+            L-value given as the left operand.
+            ++, --: In both prefix and postfix forms, these operators modify the
+            L-value on which they operate.
+
+7.  What is the result of this code fragment?
+
+    int a = 20;
+    ...
+    if( 1 <= a <= 10 )
+        printf( "In range\n" );
+    else
+        printf( "Out of range\n" ); 
+
+    Answer: In range. 1 <= a is evaluated first and the result is true (1). Then 1 <= 10 is evaluated and its result is also true (1). Compiler provides a warning for this case.
+
+8.  Rewrite this fragment of code to eliminate the redundancies.
+    a = f1( x );
+    b = f2( x + a );
+    for( c = f3( a, b ); c > 0; c = f3( a, b ) ){
+        ...
+        a = f1( ++x );
+        b = f2( x + a );
+    } 
+
+    Answer: while (a = f1( x ), b = f2( x + a ), c = f3( a, b ), x++, c > 0) {
+                // x++; or we can increment x in the body of the loop
+            }
+    
+9.  Does the following loop accomplish what it is trying to do?
+    non_zero = 0;
+    for( i = 0; i < ARRAY_SIZE; i += 1 )
+        non_zero += array[i];
+
+    if( !non_zero )
+        printf( "Values are all zero\n" );
+    else
+        printf( "There are nonzero values\n" ); 
+
+    Answer: Yes.
+
+10. Given the variable declarations and initialization below, evaluate each of the
+    following expressions. If an expression has side effects (that is, if it changes the
+    value of one or more variables), note them as well.ȱ ȱUse the initial values given
+    below for each variable, not the results of the preceding expression, to evaluate
+    each expression.
+        int a = 10, b = -25;
+        int c = 0, d = 3;
+        int e = 20; 
+
+    a. b                                -25
+    b. b++                              -25
+    c. –a                               -10
+    d. a / 6                            1
+    e. a % 6                            4
+    f. b % 10                           5
+    g. a << 2                           40
+    h. b >> 3                           -4 (two's complement)
+    i. a > b                            1
+    j. b = a                            10
+    k. b == a                           0
+    l. a & b                            2
+    m. a ^ b                            -19 
+    n. a | b                            -17
+    o. ~b                               24
+    p. c && a                           0
+    q. c || a                           1
+    r. b ? a : c                        10
+    s. a += 2                           12
+    t. b &= 20                          4
+    u. b >>= 3                          -4
+    v. a %= 6                           4
+    w. d = a > b                        1
+    x. a = b = c = d                    3
+    y. e = d + ( c = a + b ) + c        -27
+    z. a + b * 3                        -65
+    aa. b >> a – 4                      -1
+    bb. a != b != c                     1
+    cc. a == b == c                     1
+    dd. d < a < e                       1
+    ee. e > a > d                       0
+    ff. a – 10 > b + 10                 1
+    gg. a & 0x1 == b & 0x1              0
+    hh. a | b << a & b                  -25590 (first << then & then |)
+    ii. a > c || ++a > b                1
+    jj. a > c && ++a > b                1
+    kk. ! ~ b++                         0
+    ll. b++ & a <= 30                   1
+    mm. a – b, c += d, e – c            17
+    nn. a >>= 3 > 0                     5
+    oo. a <<= d > 20 ? b && c++ : d—    80
+
+11. Several expressions are listed below. Determine how each expression is being evaluated by
+    the compiler, and remove as many parentheses as possible without changing the order of
+    evaluation 
+
+    a. a + ( b / c )                                        First (b / c) then a + (b / c). We can remove the parenthesis around b / c.
+    b. ( a + b ) / c                                        First (a + b) then (a + b) / c. We can't remove the parenthesis around (a + b).
+    c. ( a * b ) % 6                                        First (a * b) then (a * b) % 6. We can remove the parenthesis around (a * b).
+    d. a * ( b % 6 )                                        First (b % 6) then a * (b % 6). We can't remove the parenthesis around (b % 6).
+    e. ( a + b ) == 6                                       First (a + b) then (a + b) == 6. We can remove the parenthesis around (a + b).
+    f. !( ( a >= '0' ) && ( a <= '9' ) )                    First (a >= '0') then if that's true (a <= '9') then (a >= '0') && (a <= '9') and then !( ( a >= '0' ) && ( a <= '9' ) ). 
+                                                            We can remove the parenthesis surrounding a >= '0' and a <= '9'.
+    g. ( ( a & 0x2f ) == ( b | 1 ) ) && ( ( ~ c ) > 0 )     We can simplify the expression to this a & 0x2f == b | 1 && ~ c > 0. 
+                                                            The order of execution will be ~ c, ~ c > 0, a & 0x2f, b | 1, a & 0x2f == b | 1 and then a & 0x2f == b | 1 && ~ c > 0.
+    h. ( ( a << b ) – 3 ) < ( b << ( a + 3 ) )              We can simplify the expresion to this ( a << b ) – 3 < ( b << a + 3 ).
+                                                            The order of execution is (a << b), (a << b) - 3, a + 3, b << a + 3 and ( a << b ) – 3 < ( b << a + 3 ).
+    i. ~ ( a ++ )                                           We can simplify the expression to this ~a++. Order of execution is a++ and then ~ a++.
+    j. ((a == 2) || (a == 4)) && ((b == 2) || (b == 4))     We can simplify the expression to this (a == 2 || a == 4) && (b == 2 || b == 4).
+                                                            The order of execution is a == 2, a == 4, (a == 2 || a == 4), b == 2, b == 4, (b == 2 || b == 4) and (a == 2 || a == 4) && (b == 2 || b == 4)
+    k. ( a & b ) ^ ( a | b )                                We can simplify the expression to this a & b ^ a | b.
+                                                            The order of execution is a & b, a & b ^ a | b and then a | b
+    l. ( a + ( b + c ) )                                    We can simplify the expression to this a + (b + c).
+
+12. How can you determine whether a right shift of a signed value is performed on
+    your machine as an arithmetic or a logical shift?
+
+    Answer: Running -1 >> 1. If arithmetic shift is performed then the result will be negative. If logical shift is performed then the result will be positive.
+
